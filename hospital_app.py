@@ -112,23 +112,19 @@ with st.form("triage_form"):
   </div>
   """, unsafe_allow_html=True)
 
-  c1,c2,c3,c4 = st.columns(4)  
+  _,c1,c2,c3,_ = st.columns(5)  
   with c1:
       fever            = st.checkbox("🌡️  Fever")
       cough            = st.checkbox("🤧  Cough")
-  with c2:
       headache         = st.checkbox("🤕  Headache")
+  with c2:
       chest_pain       = st.checkbox("💔  Chest Pain")
-  with c3:
       stomach_pain     = st.checkbox("🤢  Stomach Pain")
       shortness_breath = st.checkbox("😮‍💨  Shortness of Breath")
-  with c4:
+  with c3:
       nausea_vomiting  = st.checkbox("🤮  Nausea / Vomiting")
       dizziness        = st.checkbox("😵  Dizziness")
-    
-  c5, _, _, _ = st.columns(4)
-  with c5:
-      skin_rash = st.checkbox("🔴  Skin Rash")
+      skin_rash = st.checkbox("🔴  Skin Rash")   
 
   st.markdown("<br>", unsafe_allow_html=True)
 
@@ -187,7 +183,7 @@ with st.form("triage_form"):
 
   st.markdown("<br>", unsafe_allow_html=True)
 
-  # Section 5 — Patient Info
+  # Section 5 - Patient Info
   st.markdown("""
   <div style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:14px;
               padding:20px 24px;margin-bottom:24px;">
@@ -206,3 +202,27 @@ with st.form("triage_form"):
       gender = st.selectbox("Gender", options=['Female', 'Male'])
 
   submitted = st.form_submit_button("Get AI Recommendation →")
+  
+  # Result
+  if submitted:
+    patient = pd.DataFrame([{
+        'age'              : age,
+        'gender'           : gender_map.get(gender, 0),
+        'fever'            : int(fever),
+        'cough'            : int(cough),
+        'headache'         : int(headache),
+        'chest_pain'       : int(chest_pain),
+        'stomach_pain'     : int(stomach_pain),
+        'shortness_breath' : int(shortness_breath),
+        'nausea_vomiting'  : int(nausea_vomiting),
+        'dizziness'        : int(dizziness),
+        'skin_rash'        : int(skin_rash),
+        'temperature_level': temp_map.get(temperature_level, 1),
+        'heart_rate_level' : hr_map.get(heart_rate_level, 1),
+        'duration'         : dur_map.get(duration, 1),
+        'asthma'           : int(asthma),
+        'hypertension'     : int(hypertension),
+        'heart_disease'    : int(heart_disease),
+        'chief_complaint'  : cc_map.get(chief_complaint, 9)
+    }])
+    
