@@ -112,7 +112,7 @@ with st.form("triage_form"):
   </div>
   """, unsafe_allow_html=True)
 
-  _,c1,c2,c3,_ = st.columns(5)  
+  c1,c2,c3 = st.columns(3)  
   with c1:
       fever            = st.checkbox("🌡️  Fever")
       cough            = st.checkbox("🤧  Cough")
